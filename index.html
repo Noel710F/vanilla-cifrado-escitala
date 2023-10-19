@@ -1,0 +1,94 @@
+{% extends "_layouts/site.html" %}
+
+{% block description %}Vanilla Framework - a simple extensible CSS framework, written in Sass, by the Ubuntu Web Team.{% endblock %}
+{% block copydoc %}https://docs.google.com/document/d/1WQ3u4Eg9Vqp_yFBdIYUyGXkvhMxlPBMSr7g7O3rLzpg/edit{% endblock %}
+
+{% block content %}
+<h1>Cifrado  Escítala</h1>
+    <p>Introduce un mensaje y la clave para cifrar o descifrar:</p>
+    
+    <label for="mensaje">Mensaje:</label>
+    <input type="text" id="mensaje" /><br><br>
+    
+    <label for="clave">Clave:</label>
+    <input type="number" id="clave" /><br><br>
+    
+    <button onclick="cifrarMensaje()">Cifrar</button>
+    <button onclick="descifrarMensaje()">Descifrar</button><br><br>
+    
+    <p>Mensaje cifrado descifrado: <span id="resultado"></span></p>
+    <script>
+
+
+
+
+
+
+function cifrarMensaje() {
+    const mensaje = document.getElementById("mensaje").value;
+    const clave = parseInt(document.getElementById("clave").value);
+    
+    const mensajeCifrado = cifrarEscitala(mensaje, clave);
+    
+    document.getElementById("resultado").textContent = mensajeCifrado;
+}
+
+function descifrarMensaje() {
+    const mensaje = document.getElementById("mensaje").value;
+    const clave = parseInt(document.getElementById("clave").value);
+    
+    const mensajeDescifrado = descifrarEscitala(mensaje, clave);
+    
+    document.getElementById("resultado").textContent = mensajeDescifrado;
+}
+
+function cifrarEscitala(mensaje, clave) {
+    const filas = Math.ceil(mensaje.length / clave);
+    let matriz = Array.from({ length: filas }, () => Array(clave).fill(" "));
+    
+    let index = 0;
+    for (let i = 0; i < filas; i++) {
+        for (let j = 0; j < clave; j++) {
+            if (index < mensaje.length) {
+                matriz[i][j] = mensaje[index];
+                index++;
+            }
+        }
+    }
+    
+    let mensajeCifrado = "";
+    for (let j = 0; j < clave; j++) {
+        for (let i = 0; i < filas; i++) {
+            mensajeCifrado += matriz[i][j];
+        }
+    }
+    
+    return mensajeCifrado;
+}
+
+function descifrarEscitala(mensaje, clave) {
+    const filas = Math.ceil(mensaje.length / clave);
+    let matriz = Array.from({ length: filas }, () => Array(clave).fill(" "));
+    
+    let index = 0;
+    for (let j = 0; j < clave; j++) {
+        for (let i = 0; i < filas; i++) {
+            if (index < mensaje.length) {
+                matriz[i][j] = mensaje[index];
+                index++;
+            }
+        }
+    }
+    
+    let mensajeDescifrado = "";
+    for (let i = 0; i < filas; i++) {
+        for (let j = 0; j < clave; j++) {
+            mensajeDescifrado += matriz[i][j];
+        }
+    }
+    
+    return mensajeDescifrado.trim();
+}
+
+    </script>
+{% endblock %}
